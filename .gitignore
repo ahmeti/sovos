@@ -1,0 +1,5 @@
+.idea
+vendor
+composer.lock
+phpstan.neon
+phpstan-baseline.neon
