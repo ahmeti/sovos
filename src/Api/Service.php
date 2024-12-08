@@ -8,8 +8,6 @@ use Ahmeti\Sovos\Archive\GetSignedInvoice;
 use Ahmeti\Sovos\Archive\SendEnvelope;
 use Ahmeti\Sovos\Archive\SendInvoice;
 use Ahmeti\Sovos\Exceptions\GlobalException;
-use Ahmeti\Sovos\Exceptions\SchemaValidationException;
-use Ahmeti\Sovos\Exceptions\UnauthorizedException;
 use Ahmeti\Sovos\SMM\CancelDocument;
 use Ahmeti\Sovos\SMM\GetDocument;
 use Ahmeti\Sovos\SMM\SendDocument;
@@ -187,32 +185,20 @@ class Service
     {
         $soap = simplexml_load_string($responseText);
         $soap->registerXPathNamespace('s', 'http://schemas.xmlsoap.org/soap/envelope/');
-        if (isset($soap->xpath('//s:Body/s:Fault')[0])) {
-            $fault = $soap->xpath('//s:Body/s:Fault')[0];
 
-            if ($fault->faultstring == 'Unauthorized') {
-                throw new UnauthorizedException($fault->faultstring, (int) $fault->faultcode);
-            } elseif ($fault->faultstring == 'Şema validasyon hatası') {
-                $message = $soap->xpath('//s:Body/s:Fault/detail');
-                if (isset($message[0])) {
-                    throw new SchemaValidationException($message[0]->ProcessingFault->Message, (int) $message[0]->ProcessingFault->Code);
-                } else {
-                    throw new SchemaValidationException('Bilinmeyen bir şema hatası oluştu.');
-                }
-            } elseif ($fault->faultcode == 's:Server') {
-                $message = $soap->xpath('//s:Body/s:Fault/detail');
+        $detail = null;
+        $result = null;
 
-                if (isset($message[0])) {
-                    $fault->faultstring = $message[0]->ProcessingFault->Message;
-                    $fault->faultcode = $message[0]->ProcessingFault->Code;
-                }
-                if ($fault->faultcode == 's:Server') {
-                    $fault->faulcode = 0;
-                }
-                throw new GlobalException($fault->faultstring, (int) $fault->faultcode);
-            } else {
-                throw new GlobalException("Fatal Error : Code '".$fault->faultcode."', Message '".$fault->faultstring."' [".$responseText.'].');
-            }
+        if (isset($soap->xpath('//Detail')[0])) {
+            $detail = (string) $soap->xpath('//Detail')[0];
+        }
+
+        if (isset($soap->xpath('//Result//Result')[0])) {
+            $result = (string) $soap->xpath('//Result//Result')[0];
+        }
+
+        if ($result === 'FAIL') {
+            throw new GlobalException($detail);
         }
 
         return $soap;
