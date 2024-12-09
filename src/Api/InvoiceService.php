@@ -28,6 +28,20 @@ class InvoiceService extends Service
 
     protected string $soapSubClassPrefix = 'ein';
 
+    protected function getXml(string $responseText): object
+    {
+        $soap = simplexml_load_string($responseText);
+        $soap->registerXPathNamespace('s', 'http://schemas.xmlsoap.org/soap/envelope/');
+        if (isset($soap->xpath('//s:Body/s:Fault')[0])) {
+            $fault = $soap->xpath('//s:Body/s:Fault')[0];
+            if (isset($fault->faultcode) && isset($fault->faultstring)) {
+                throw new GlobalException($fault->faultcode.' '.$fault->faultstring);
+            }
+        }
+
+        return $soap;
+    }
+
     public function GetUserListRequest(GetUserList $request): array
     {
         $soap = $this->getXml($this->request($request));

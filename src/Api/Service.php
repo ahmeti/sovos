@@ -13,7 +13,7 @@ use Ahmeti\Sovos\SMM\GetDocument;
 use Ahmeti\Sovos\SMM\SendDocument;
 use GuzzleHttp\Client;
 
-class Service
+abstract class Service
 {
     protected string $url_test = '';
 
@@ -47,6 +47,8 @@ class Service
         $this->headers['Authorization'] = 'Basic '.base64_encode($username.':'.$password);
         $this->client = new Client;
     }
+
+    abstract protected function getXml(string $responseText): object;
 
     public function setSoapXmlPref(string $soapXmlPref): void
     {
@@ -179,28 +181,5 @@ class Service
         $mainXml = sprintf($this->soapXmlPref, $treeXml);
 
         return trim($mainXml);
-    }
-
-    protected function getXml(string $responseText): object
-    {
-        $soap = simplexml_load_string($responseText);
-        $soap->registerXPathNamespace('s', 'http://schemas.xmlsoap.org/soap/envelope/');
-
-        $detail = null;
-        $result = null;
-
-        if (isset($soap->xpath('//Detail')[0])) {
-            $detail = (string) $soap->xpath('//Detail')[0];
-        }
-
-        if (isset($soap->xpath('//Result//Result')[0])) {
-            $result = (string) $soap->xpath('//Result//Result')[0];
-        }
-
-        if ($result === 'FAIL') {
-            throw new GlobalException($detail);
-        }
-
-        return $soap;
     }
 }
