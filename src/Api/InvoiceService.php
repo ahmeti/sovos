@@ -2,6 +2,7 @@
 
 namespace Ahmeti\Sovos\Api;
 
+use Ahmeti\Sovos\Exceptions\GlobalException;
 use Ahmeti\Sovos\Invoice\GetEnvelopeStatus;
 use Ahmeti\Sovos\Invoice\GetEnvelopeStatusResponse;
 use Ahmeti\Sovos\Invoice\GetInvoiceView;
@@ -16,6 +17,7 @@ use Ahmeti\Sovos\Invoice\GetUserList;
 use Ahmeti\Sovos\Invoice\GetUserListResponse;
 use Ahmeti\Sovos\Invoice\SendUBL;
 use Ahmeti\Sovos\Invoice\SendUBLResponse;
+use SimpleXMLElement;
 
 class InvoiceService extends Service
 {
@@ -28,7 +30,7 @@ class InvoiceService extends Service
 
     protected string $soapSubClassPrefix = 'ein';
 
-    protected function getXml(string $responseText): object
+    protected function getXml(string $responseText): SimpleXMLElement
     {
         $soap = simplexml_load_string($responseText);
         $soap->registerXPathNamespace('s', 'http://schemas.xmlsoap.org/soap/envelope/');

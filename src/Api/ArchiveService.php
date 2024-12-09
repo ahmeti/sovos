@@ -22,6 +22,8 @@ use Ahmeti\Sovos\Archive\SendEnvelope;
 use Ahmeti\Sovos\Archive\SendEnvelopeResponse;
 use Ahmeti\Sovos\Archive\SendInvoice;
 use Ahmeti\Sovos\Archive\SendInvoiceResponse;
+use Ahmeti\Sovos\Exceptions\GlobalException;
+use SimpleXMLElement;
 
 class ArchiveService extends Service
 {
@@ -58,6 +60,29 @@ class ArchiveService extends Service
         $mainXml = sprintf($replaced, $treeXml);
 
         return trim($mainXml);
+    }
+
+    protected function getXml(string $responseText): SimpleXMLElement
+    {
+        $soap = simplexml_load_string($responseText);
+        $soap->registerXPathNamespace('s', 'http://schemas.xmlsoap.org/soap/envelope/');
+
+        $detail = null;
+        $result = null;
+
+        if (isset($soap->xpath('//Detail')[0])) {
+            $detail = (string) $soap->xpath('//Detail')[0];
+        }
+
+        if (isset($soap->xpath('//Result//Result')[0])) {
+            $result = (string) $soap->xpath('//Result//Result')[0];
+        }
+
+        if ($result === 'FAIL') {
+            throw new GlobalException($detail);
+        }
+
+        return $soap;
     }
 
     protected function fillObj(object $object, object $data): object

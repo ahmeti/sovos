@@ -12,6 +12,7 @@ use Ahmeti\Sovos\SMM\CancelDocument;
 use Ahmeti\Sovos\SMM\GetDocument;
 use Ahmeti\Sovos\SMM\SendDocument;
 use GuzzleHttp\Client;
+use SimpleXMLElement;
 
 abstract class Service
 {
@@ -48,7 +49,7 @@ abstract class Service
         $this->client = new Client;
     }
 
-    abstract protected function getXml(string $responseText): object;
+    abstract protected function getXml(string $responseText): SimpleXMLElement;
 
     public function setSoapXmlPref(string $soapXmlPref): void
     {
