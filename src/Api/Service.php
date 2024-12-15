@@ -13,6 +13,7 @@ use Ahmeti\Sovos\SMM\GetDocument;
 use Ahmeti\Sovos\SMM\SendDocument;
 use GuzzleHttp\Client;
 use SimpleXMLElement;
+use Throwable;
 
 abstract class Service
 {
@@ -106,12 +107,16 @@ abstract class Service
 
         $this->headers['SOAPAction'] = $soapAction;
         $this->headers['Content-Length'] = strlen($xmlMake);
-        $response = $this->client->request('POST', $this->url, [
-            'headers' => $this->headers,
-            'body' => $xmlMake,
-            'http_errors' => false,
-            'verify' => false,
-        ]);
+
+        try {
+            $response = $this->client->request('POST', $this->url, [
+                'headers' => $this->headers,
+                'body' => $xmlMake,
+                'verify' => false,
+            ]);
+        } catch (Throwable $e) {
+            throw new GlobalException($e->getMessage(), $e->getCode(), $e);
+        }
 
         return $response->getBody()->getContents();
     }
