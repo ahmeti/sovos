@@ -11,6 +11,7 @@ class SendUBL
         public ?string $SenderIdentifier = null,
         public ?string $ReceiverIdentifier = null,
         public ?string $DocType = null,
-        public ?string $DocData = null
+        public ?string $DocData = null,
+        public ?string $Parameters = null,
     ) {}
 }
