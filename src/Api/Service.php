@@ -108,15 +108,12 @@ abstract class Service
         $this->headers['SOAPAction'] = $soapAction;
         $this->headers['Content-Length'] = strlen($xmlMake);
 
-        try {
-            $response = $this->client->request('POST', $this->url, [
-                'headers' => $this->headers,
-                'body' => $xmlMake,
-                'verify' => false,
-            ]);
-        } catch (Throwable $e) {
-            throw new GlobalException($e->getMessage(), $e->getCode(), $e);
-        }
+        $response = $this->client->request('POST', $this->url, [
+            'headers' => $this->headers,
+            'body' => $xmlMake,
+            'verify' => false,
+            'http_errors' => false,
+        ]);
 
         return $response->getBody()->getContents();
     }
