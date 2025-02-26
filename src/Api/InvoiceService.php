@@ -7,6 +7,8 @@ use Ahmeti\Sovos\Invoice\GetEnvelopeStatus;
 use Ahmeti\Sovos\Invoice\GetEnvelopeStatusResponse;
 use Ahmeti\Sovos\Invoice\GetInvoiceView;
 use Ahmeti\Sovos\Invoice\GetInvoiceViewResponse;
+use Ahmeti\Sovos\Invoice\GetInvResponses;
+use Ahmeti\Sovos\Invoice\GetInvResponsesResponse;
 use Ahmeti\Sovos\Invoice\GetRawUserList;
 use Ahmeti\Sovos\Invoice\GetRawUserListResponse;
 use Ahmeti\Sovos\Invoice\GetUbl;
@@ -17,6 +19,7 @@ use Ahmeti\Sovos\Invoice\GetUserList;
 use Ahmeti\Sovos\Invoice\GetUserListResponse;
 use Ahmeti\Sovos\Invoice\SendUBL;
 use Ahmeti\Sovos\Invoice\SendUBLResponse;
+use Ahmeti\Sovos\Invoice\Utils\InvResponses;
 use SimpleXMLElement;
 
 class InvoiceService extends Service
@@ -128,6 +131,28 @@ class InvoiceService extends Service
         return new GetRawUserListResponse(
             DocData: $body->getRAWUserListResponse->DocData
         );
+    }
 
+    public function GetInvResponsesRequest(GetInvResponses $request): array
+    {
+        $soap = $this->getXml($this->request($request));
+        $ublList = $soap->xpath('//s:Body')[0];
+        $list = [];
+        foreach ($ublList->getInvResponsesResponse->Response as $response) {
+            $list[] = new GetInvResponsesResponse(
+                InvoiceUUID: $response->InvoiceUUID,
+                InvResponses: isset($response->InvResponses) ? new InvResponses(
+                    EnvUUID: $response->InvResponses->EnvUUID,
+                    UUID: $response->InvResponses->UUID,
+                    ID: $response->InvResponses->ID,
+                    InsertDateTime: $response->InvResponses->InsertDateTime,
+                    IssueDate: $response->InvResponses->IssueDate,
+                    ARType: $response->InvResponses->ARType,
+                    ARNotes: $response->InvResponses->ARNotes,
+                ) : null
+            );
+        }
+
+        return $list;
     }
 }
