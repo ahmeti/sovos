@@ -11,7 +11,8 @@
  - [E-Fatura Gelen/Giden Faturaları Sorgulama](#e-fatura-gelengiden-faturaları-sorgulama)
  - [E-Fatura Gelen/Giden Fatura PDF veya HTML İndirme](#e-fatura-gelengiden-fatura-pdf-veya-html-i̇ndirme)
  - [E-Fatura Gelen/Giden Fatura UBL İndirme](#e-fatura-gelengiden-fatura-ubl-i̇ndirme)
- - [E-Fatura Zarf Sorgulama](#e-fatura-zarf-sorgulama)
+ - [E-Fatura Zarf (GİB Durum) Sorgulama](#e-fatura-zarf-gib-durum-sorgulama)
+ - [E-Fatura Yanıtlarını (KABUL, RED) Sorgulama](#e-fatura-yanıtlarını-kabul-red-sorgulama)
  - [E-Fatura Uygulama Yanıtı UBL Oluşturma](#e-fatura-uygulama-yanıtı-ubl-oluşturma)
  - [E-Fatura UBL Oluşturma](#e-fatura-ubl-oluşturma)
  - [E-Fatura Gönderme](#e-fatura-gönderme)
@@ -139,7 +140,7 @@ $getEnvelopeRequest = new Ahmeti\Sovos\Invoice\GetEnvelopeStatus(
 $data = $service->GetEnvelopeStatusRequest($getEnvelopeRequest);
 ```
 
-## E-Fatura Yanıtlarını Sorgulama
+## E-Fatura Yanıtlarını (KABUL, RED) Sorgulama
 Seçilen ETTN kodlarına ait fatura yanıt (KABUL, RED veya YANITSIZ) durumunu sorgulamak için kullanılan fonksiyondur.
 
 ```php
