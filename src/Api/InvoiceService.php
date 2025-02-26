@@ -103,8 +103,14 @@ class InvoiceService extends Service
         $ublList = $soap->xpath('//s:Body')[0];
         $list = [];
         foreach ($ublList->getEnvelopeStatusResponse->Response as $response) {
-            $responseObj = new GetEnvelopeStatusResponse;
-            $list[] = $this->fillObj($responseObj, $response);
+            $list[] = new GetEnvelopeStatusResponse(
+                UUID: $response->UUID,
+                IssueDate: $response->IssueDate,
+                DocumentTypeCode: $response->DocumentTypeCode,
+                DocumentType: $response->DocumentType,
+                ResponseCode: $response->ResponseCode,
+                Description: $response->Description
+            );
         }
 
         return $list;
