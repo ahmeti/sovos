@@ -126,18 +126,31 @@ $getUblRequest = new Ahmeti\Sovos\Invoice\GetUbl(
 $data = $service->GetUblRequest($getUblRequest);
 ```
 
-## E-Fatura Zarf Sorgulama
-Seçilen zarfın durumunu vb. durumları sorgulama ve detaylar için kullanılan fonksiyon. Daha detaylı bilgi için Sovos dökümanına göz atınız.
+## E-Fatura Zarf (GİB Durum) Sorgulama
+Seçilen zarfın GİB durumunu (1120-ZARF ARSIVDEN KOPYALANAMADI, 1300-BASARIYLA TAMAMLANDI) sorgulamak için kullanılan fonksiyondur.
 
 ```php
 $getEnvelopeRequest = new Ahmeti\Sovos\Invoice\GetEnvelopeStatus(
     Identifier: 'SORGULAYAN_PK', // SORGULAYAN_PK veya SORGULAYAN_GB
     VKN_TCKN: 'SORGULAYAN_VKN_TCKN',
-    UUID: 'ZARF_UUID',
-    Parameters: 'DOC_DATA' // EK PARAMETRE
+    UUID: 'ZARF_UUID', // STRING veya ARRAY
 );
 
 $data = $service->GetEnvelopeStatusRequest($getEnvelopeRequest);
+```
+
+## E-Fatura Yanıtlarını Sorgulama
+Seçilen ETTN kodlarına ait fatura yanıt (KABUL, RED veya YANITSIZ) durumunu sorgulamak için kullanılan fonksiyondur.
+
+```php
+$getEnvelopeRequest = new Ahmeti\Sovos\Invoice\GetInvResponses(
+    Identifier: 'SORGULAYAN_PK', // SORGULAYAN_PK veya SORGULAYAN_GB
+    VKN_TCKN: 'SORGULAYAN_VKN_TCKN',
+    UUID: 'ZARF_UUID', // STRING veya ARRAY
+    Type: 'OUTBOUND', // INBOUND veya OUTBOUND
+);
+
+$data = $service->GetInvResponsesRequest($getEnvelopeRequest);
 ```
 
 ## E-Fatura Uygulama Yanıtı UBL Oluşturma
