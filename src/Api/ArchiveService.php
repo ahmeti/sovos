@@ -22,7 +22,7 @@ use Ahmeti\Sovos\Archive\SendEnvelope;
 use Ahmeti\Sovos\Archive\SendEnvelopeResponse;
 use Ahmeti\Sovos\Archive\SendInvoice;
 use Ahmeti\Sovos\Archive\SendInvoiceResponse;
-use Ahmeti\Sovos\Exceptions\GlobalException;
+use Ahmeti\Sovos\Exceptions\SovosException;
 use SimpleXMLElement;
 
 class ArchiveService extends Service
@@ -79,7 +79,7 @@ class ArchiveService extends Service
         }
 
         if ($result === 'FAIL') {
-            throw new GlobalException($detail);
+            throw new SovosException($detail);
         }
 
         return $soap;

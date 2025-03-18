@@ -7,7 +7,7 @@ use Ahmeti\Sovos\Archive\GetInvoiceDocument;
 use Ahmeti\Sovos\Archive\GetSignedInvoice;
 use Ahmeti\Sovos\Archive\SendEnvelope;
 use Ahmeti\Sovos\Archive\SendInvoice;
-use Ahmeti\Sovos\Exceptions\GlobalException;
+use Ahmeti\Sovos\Exceptions\SovosException;
 use Ahmeti\Sovos\SMM\CancelDocument;
 use Ahmeti\Sovos\SMM\GetDocument;
 use Ahmeti\Sovos\SMM\SendDocument;
@@ -102,7 +102,7 @@ abstract class Service
         }
 
         if ($this->debug) {
-            throw new GlobalException($xmlMake);
+            throw new SovosException($xmlMake);
         }
 
         $this->headers['SOAPAction'] = $soapAction;
@@ -116,7 +116,7 @@ abstract class Service
                 'http_errors' => false,
             ]);
         } catch (ConnectException $e) {
-            throw new GlobalException($e->getMessage(), $e->getCode(), $e);
+            throw new SovosException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $response->getBody()->getContents();

@@ -2,7 +2,7 @@
 
 namespace Ahmeti\Sovos\Api;
 
-use Ahmeti\Sovos\Exceptions\GlobalException;
+use Ahmeti\Sovos\Exceptions\SovosException;
 use Ahmeti\Sovos\Invoice\GetEnvelopeStatus;
 use Ahmeti\Sovos\Invoice\GetEnvelopeStatusResponse;
 use Ahmeti\Sovos\Invoice\GetInvoiceView;
@@ -40,7 +40,7 @@ class InvoiceService extends Service
         if (isset($soap->xpath('//s:Body/s:Fault')[0])) {
             $fault = $soap->xpath('//s:Body/s:Fault')[0];
             if (isset($fault->faultcode) && isset($fault->faultstring)) {
-                throw new GlobalException($fault->faultcode.' '.$fault->faultstring);
+                throw new SovosException($fault->faultcode.' '.$fault->faultstring);
             }
         }
 
