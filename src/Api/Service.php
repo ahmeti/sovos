@@ -12,8 +12,8 @@ use Ahmeti\Sovos\SMM\CancelDocument;
 use Ahmeti\Sovos\SMM\GetDocument;
 use Ahmeti\Sovos\SMM\SendDocument;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 use SimpleXMLElement;
-use Throwable;
 
 abstract class Service
 {
@@ -108,12 +108,16 @@ abstract class Service
         $this->headers['SOAPAction'] = $soapAction;
         $this->headers['Content-Length'] = strlen($xmlMake);
 
-        $response = $this->client->request('POST', $this->url, [
-            'headers' => $this->headers,
-            'body' => $xmlMake,
-            'verify' => false,
-            'http_errors' => false,
-        ]);
+        try {
+            $response = $this->client->request('POST', $this->url, [
+                'headers' => $this->headers,
+                'body' => $xmlMake,
+                'verify' => false,
+                'http_errors' => false,
+            ]);
+        } catch (ConnectException $e) {
+            throw new GlobalException($e->getMessage(), $e->getCode(), $e);
+        }
 
         return $response->getBody()->getContents();
     }
