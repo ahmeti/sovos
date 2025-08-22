@@ -12,11 +12,14 @@
         {
             "name": "Orhan Gazi Başlı",
             "email": "obasli@unlembilisim.com",
-            "homepage": "http://unlembilisim.com/"
+            "homepage": "https://unlembilisim.com/"
         }
     ],
     "require": {
         "php": ">=8.0",
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "ext-simplexml": "*",
         "guzzlehttp/guzzle": ">=7.0",
         "ahmeti/ubl": "^2.1"
     },

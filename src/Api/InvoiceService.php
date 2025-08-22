@@ -10,7 +10,6 @@ use Ahmeti\Sovos\Invoice\GetInvoiceViewResponse;
 use Ahmeti\Sovos\Invoice\GetInvResponses;
 use Ahmeti\Sovos\Invoice\GetInvResponsesResponse;
 use Ahmeti\Sovos\Invoice\GetRawUserList;
-use Ahmeti\Sovos\Invoice\GetRawUserListResponse;
 use Ahmeti\Sovos\Invoice\GetUbl;
 use Ahmeti\Sovos\Invoice\GetUblList;
 use Ahmeti\Sovos\Invoice\GetUblListResponse;
@@ -21,6 +20,7 @@ use Ahmeti\Sovos\Invoice\SendUBL;
 use Ahmeti\Sovos\Invoice\SendUBLResponse;
 use Ahmeti\Sovos\Invoice\Utils\InvResponses;
 use SimpleXMLElement;
+use Throwable;
 
 class InvoiceService extends Service
 {
@@ -129,14 +129,14 @@ class InvoiceService extends Service
         return $list;
     }
 
-    public function GetRawUserListRequest(GetRawUserList $request): GetRawUserListResponse
+    public function GetRawUserListRequest(GetRawUserList $request): string
     {
-        $soap = $this->getXml($this->request($request));
-        $body = $soap->xpath('//s:Body')[0];
-
-        return new GetRawUserListResponse(
-            DocData: $body->getRAWUserListResponse->DocData
-        );
+        try {
+            // Fix: simplexml_load_string() xmlSAX2Characters: huge text node!
+            return substr($this->request($request), 240, -57);
+        } catch (Throwable) {
+            throw new SovosException('GetRawUserList not found.');
+        }
     }
 
     public function GetInvResponsesRequest(GetInvResponses $request): array
