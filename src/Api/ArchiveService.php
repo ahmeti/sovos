@@ -82,6 +82,10 @@ class ArchiveService extends Service
             throw new SovosException($detail);
         }
 
+        if (isset($soap->xpath('//s:Body//s:Fault')[0]->faultstring)) {
+            throw new SovosException((string) $soap->xpath('//s:Body//s:Fault')[0]->faultstring);
+        }
+
         return $soap;
     }
 
