@@ -1,1 +1,14 @@
-<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><s:Fault><faultcode>s:Server</faultcode><faultstring>Fatura ID sistemde mevcut</faultstring><detail><ProcessingFault xmlns="http:/fitcons.com/eInvoice/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><Code>3012</Code><Message>Fatura ID sistemde mevcut - ID: FT02024000000078 CustInvID: 349</Message></ProcessingFault></detail></s:Fault></s:Body></s:Envelope>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <s:Fault>
+            <faultcode>s:Server</faultcode>
+            <faultstring>Fatura ID sistemde mevcut</faultstring>
+            <detail>
+                <ProcessingFault xmlns="http:/fitcons.com/eInvoice/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <Code>3012</Code>
+                    <Message>Fatura ID sistemde mevcut - ID: FT02024000000078 CustInvID: 349</Message>
+                </ProcessingFault>
+            </detail>
+        </s:Fault>
+    </s:Body>
+</s:Envelope>

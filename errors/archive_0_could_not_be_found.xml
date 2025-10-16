@@ -1,0 +1,14 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <s:Fault>
+            <faultcode>s:Client</faultcode>
+            <faultstring xml:lang="tr-TR">Invoice could not be found!</faultstring>
+            <detail>
+                <processingFaultType xmlns="http://fitcons.com/earchive/base" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                    <Code xmlns="">0</Code>
+                    <Text xmlns="">Invoice could not be found!</Text>
+                </processingFaultType>
+            </detail>
+        </s:Fault>
+    </s:Body>
+</s:Envelope>

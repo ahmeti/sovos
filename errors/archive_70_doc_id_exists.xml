@@ -1,1 +1,17 @@
-<sendInvoiceResponseType xmlns="http://fitcons.com/earchive/invoice"><Detail xmlns="">70:Invoice already exists in database. detail: Fatura sistemde mevcut, (UUID/FATURA_NO/MUSTERI_FATURA_NO) bilgilerini kontrol ediniz.</Detail><Result xmlns=""><Result>FAIL</Result></Result><preCheckErrorResults xmlns=""><preCheckError><UUID>ec5bae67-26b3-412c-881f-61a886c2d416</UUID><Vkn>0000123456</Vkn><InvoiceNumber>FA02024000000465</InvoiceNumber><ErrorCode>70</ErrorCode><ErrorDesc>Invoice already exists in database. detail: Fatura sistemde mevcut, (UUID/FATURA_NO/MUSTERI_FATURA_NO) bilgilerini kontrol ediniz.</ErrorDesc><Filename/></preCheckError></preCheckErrorResults><preCheckSuccessResults xmlns=""/></sendInvoiceResponseType>
+<sendInvoiceResponseType xmlns="http://fitcons.com/earchive/invoice">
+    <Detail xmlns="">70:Invoice already exists in database. detail: Fatura sistemde mevcut, (UUID/FATURA_NO/MUSTERI_FATURA_NO) bilgilerini kontrol ediniz.</Detail>
+    <Result xmlns="">
+        <Result>FAIL</Result>
+    </Result>
+    <preCheckErrorResults xmlns="">
+        <preCheckError>
+            <UUID>ec5bae67-26b3-412c-881f-61a886c2d416</UUID>
+            <Vkn>0000123456</Vkn>
+            <InvoiceNumber>FA02024000000465</InvoiceNumber>
+            <ErrorCode>70</ErrorCode>
+            <ErrorDesc>Invoice already exists in database. detail: Fatura sistemde mevcut, (UUID/FATURA_NO/MUSTERI_FATURA_NO) bilgilerini kontrol ediniz.</ErrorDesc>
+            <Filename/>
+        </preCheckError>
+    </preCheckErrorResults>
+    <preCheckSuccessResults xmlns=""/>
+</sendInvoiceResponseType>
