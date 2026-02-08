@@ -7,8 +7,8 @@ class GetUblList
     /**
      * @param  string|null  $DocType  INVOICE or ENVOLOPE
      * @param  string|null  $Type  INBOUND or OUTBOUND
-     * @param  string|null  $FromDate  2020-01-01T00:00:00+03:00
-     * @param  string|null  $ToDate  2020-01-01T00:00:00+03:00
+     * @param  string|null  $FromDate  2026-02-01T00:00:00.000000+03:00 formatında olmalıdır.
+     * @param  string|null  $ToDate  2026-02-01T23:59:59.999999+03:00 formatında olmalıdır.
      */
     public function __construct(
         public string $soapAction = 'getUBLList',
