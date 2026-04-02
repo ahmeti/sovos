@@ -14,6 +14,8 @@ use Ahmeti\Sovos\Despatch\GetDesView;
 use Ahmeti\Sovos\Despatch\GetDesViewResponse;
 use Ahmeti\Sovos\Despatch\SendDespatch;
 use Ahmeti\Sovos\Despatch\SendDespatchResponse;
+use Ahmeti\Sovos\Exceptions\SovosException;
+use SimpleXMLElement;
 
 class DespatchService extends Service
 {
@@ -25,6 +27,20 @@ class DespatchService extends Service
         '<soapenv:Header/><soapenv:Body>%s</soapenv:Body></soapenv:Envelope>';
 
     protected string $soapSubClassPrefix = 'edes';
+
+    protected function getXml(string $responseText): SimpleXMLElement
+    {
+        $soap = simplexml_load_string($responseText);
+        $soap->registerXPathNamespace('s', 'http://schemas.xmlsoap.org/soap/envelope/');
+        if (isset($soap->xpath('//s:Body/s:Fault')[0])) {
+            $fault = $soap->xpath('//s:Body/s:Fault')[0];
+            if (isset($fault->faultcode) && isset($fault->faultstring)) {
+                throw new SovosException($fault->faultcode.' '.$fault->faultstring);
+            }
+        }
+
+        return $soap;
+    }
 
     public function GetUblListRequest(GetDesUBLList $request): array
     {
